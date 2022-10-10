@@ -107,8 +107,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
                     getplot = TRUE, saveplot = TRUE,
                     GeneList = FALSE, TissueList = FALSE){
   
-  
-  
   ######################################
   ######## eQTpLot.gene.list SubFunction
   ######################################
@@ -122,27 +120,29 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     chromosome <- Genes.df$CHR[Genes.df$Gene == gene & Genes.df$Build == gbuild]
     
     
-    
     ### Subset GWAS.df for gene of interest, check to make sure data is present
     gwas.data <- GWAS.df[which(GWAS.df$CHR == chromosome & GWAS.df$PHE == trait & GWAS.df$BP >= startpos & GWAS.df$BP <= stoppos & !(is.na(GWAS.df$P)) & !(is.na(GWAS.df$BETA))), ]
-    if(dim(gwas.data)[1] == 0) stop('Sorry, GWAS.df does not contain data for any SNPs in the ', paste(range), 'kb flanking the gene ', paste(gene), ' for the trait ', paste(trait))
+    if(dim(gwas.data)[1] == 0)
+      stop('Sorry, GWAS.df does not contain data for any SNPs in the ', paste(range), 'kb flanking the gene ', paste(gene), ' for the trait ', paste(trait))
+
     if(dim(gwas.data[which(gwas.data$P <= sigpvalue_GWAS), ])[1] == 0) {
       print(paste(sep = "", 'WARNING: GWAS.df does not contain any SNPs with p-value < sigpvalue_GWAS within the ',
                   range, 'kb flanking the gene ', gene, ' for the trait ',
                   trait))
     }
     
-    
-    if(GeneList == TRUE & TissueList == FALSE){
+    if(isTRUE(GeneList) && isFALSE(TissueList)){
       ### Subset eQTL.df for tissue and gene of interest, check to make sure data is present
       if(length(tissue) >= 2 & ("all" %in% tissue) == FALSE){
         eQTL.df <- eQTL.df[which(eQTL.df$Tissue %in% tissue), ]
       }
-      
+
       eqtl.data <- eQTL.df[which(eQTL.df$Gene.Symbol == gene & eQTL.df$P.Value <= sigpvalue_eQTL & !(is.na(eQTL.df$NES)) & !(is.na(eQTL.df$P.Value))), ]
       if(dim(eqtl.data)[1] == 0) stop('Sorry, eQTL.df does not have any data for the gene ', paste(gene), ' meeting your sigpvalue_eQTL threshold')
-      if(any(tissue == "all") == TRUE | (length(tissue) >= 2) == TRUE){PanTissue <- TRUE}
-      if(("all" %in% tissue) == FALSE & (length(tissue) >= 2) == FALSE){PanTissue <- FALSE}
+      if(any(tissue == "all") == TRUE || (length(tissue) >= 2) == TRUE)
+        PanTissue <- TRUE
+      if(("all" %in% tissue) == FALSE && (length(tissue) >= 2) == FALSE)
+        PanTissue <- FALSE
       
       ### Calculate eQTL Medians and Means, if requested
       if(PanTissue == TRUE & (CollapseMethod == "mean" | CollapseMethod == "median" )) {
@@ -178,45 +178,43 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
         eqtl.data.sum.final$Z <- NULL
       }
       
-      if(PanTissue == TRUE) {
+      if(isTRUE(PanTissue)) {
         eqtl.data <- eqtl.data[which(!(is.na(eqtl.data$SNP.Id))), ] %>% dplyr::group_by(SNP.Id) %>% dplyr::slice(which.min(P.Value));
         eqtl.data$Tissue <- "PanTissue"
       } else {
         eqtl.data <- eqtl.data[which(eqtl.data$Tissue == tissue), ]
       }
-      
-      if(CollapseMethod == "mean" & PanTissue == TRUE){
-        dplyr::left_join(eqtl.data, Mean.Ps, by = "SNP.Id") -> eqtl.data
-        dplyr::left_join(eqtl.data, Mean.NESs, by = "SNP.Id") -> eqtl.data
-        eqtl.data$P.Value <- eqtl.data$Mean.P
-        eqtl.data$NES <- eqtl.data$Mean.NES
-        eqtl.data$Mean.P <- NULL
-        eqtl.data$Mean.NES <- NULL
-      }
-      
-      if(CollapseMethod == "median" & PanTissue == TRUE){
-        dplyr::left_join(eqtl.data, Median.Ps, by = "SNP.Id") -> eqtl.data
-        dplyr::left_join(eqtl.data, Median.NESs, by = "SNP.Id") -> eqtl.data
-        eqtl.data$P.Value <- eqtl.data$Median.P
-        eqtl.data$NES <- eqtl.data$Median.NES
-        eqtl.data$Median.P <- NULL
-        eqtl.data$Median.NES <- NULL
-      }
-      
-      if(CollapseMethod == "meta" & PanTissue == TRUE){
-        dplyr::left_join(eqtl.data, eqtl.data.sum.final, by = "SNP.Id") -> eqtl.data
-        eqtl.data$P.Value <- eqtl.data$P
-        eqtl.data$NES <- (eqtl.data$sign)/3
-        eqtl.data$sign <- NULL
-        eqtl.data$N <- NULL
-        eqtl.data$P <- NULL
+
+      if(isTRUE(PanTissue)) {
+        if(CollapseMethod == "mean") {
+          dplyr::left_join(eqtl.data, Mean.Ps, by = "SNP.Id") -> eqtl.data
+          dplyr::left_join(eqtl.data, Mean.NESs, by = "SNP.Id") -> eqtl.data
+          eqtl.data$P.Value <- eqtl.data$Mean.P
+          eqtl.data$NES <- eqtl.data$Mean.NES
+          eqtl.data$Mean.P <- NULL
+          eqtl.data$Mean.NES <- NULL
+        } else if(CollapseMethod == "median") {
+          dplyr::left_join(eqtl.data, Median.Ps, by = "SNP.Id") -> eqtl.data
+          dplyr::left_join(eqtl.data, Median.NESs, by = "SNP.Id") -> eqtl.data
+          eqtl.data$P.Value <- eqtl.data$Median.P
+          eqtl.data$NES <- eqtl.data$Median.NES
+          eqtl.data$Median.P <- NULL
+          eqtl.data$Median.NES <- NULL
+        } else if(CollapseMethod == "meta") {
+          dplyr::left_join(eqtl.data, eqtl.data.sum.final, by = "SNP.Id") -> eqtl.data
+          eqtl.data$P.Value <- eqtl.data$P
+          eqtl.data$NES <- (eqtl.data$sign)/3
+          eqtl.data$sign <- NULL
+          eqtl.data$N <- NULL
+          eqtl.data$P <- NULL
+        }
       }
     }
     
-    
     eqtl.data$P.Value <- ifelse(eqtl.data$P.Value  <= 1e-300, 1e-300,eqtl.data$P.Value)
     
-    if(dim(eqtl.data)[1] == 0) stop('Sorry, there are no eQTLs for the tissue', paste(tissue), ' with a p-value < sigeQTL')
+    if(dim(eqtl.data)[1] == 0)
+      stop('Sorry, there are no eQTLs for the tissue', paste(tissue), ' with a p-value < sigeQTL')
     eqtl.data <- dplyr::ungroup(eqtl.data)
     
     
@@ -226,9 +224,8 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     combinedSNPS <- sort(union(levels(gwas.data$SNP), levels(eqtl.data$SNP.Id)))
     Combined.eQTL.GWAS.Data <- dplyr::left_join(dplyr::mutate(gwas.data, SNP=factor(SNP, levels=combinedSNPS)),
                                                 dplyr::mutate(eqtl.data, SNP.Id=factor(SNP.Id, levels=combinedSNPS)) %>% dplyr::rename(SNP = SNP.Id), by = "SNP")
-    if(dim(Combined.eQTL.GWAS.Data)[1] == 0) {
+    if(dim(Combined.eQTL.GWAS.Data)[1] == 0)
       stop('Sorry, for the gene ', paste(gene), ' and the trait ', paste(trait), ' there is no overlap between the SNPs in your GWAS.df and eQTL.df')
-    }
     
     
     ### Determine directions of effect and congruence
@@ -248,12 +245,11 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     Combined.eQTL.GWAS.Data$significance <- ifelse(Combined.eQTL.GWAS.Data$P >= sigpvalue_GWAS, "Non-significant", "Significant")
     Combined.eQTL.GWAS.Data$Congruence[is.na(Combined.eQTL.GWAS.Data$Congruence)] <- "Non-eQTL"
     Combined.eQTL.GWAS.Data <- Combined.eQTL.GWAS.Data %>% dplyr::mutate(Congruence=factor(Congruence, levels=c("Non-eQTL", "Congruent", "Incongruent"), ordered=TRUE))
-    if(dim(Combined.eQTL.GWAS.Data[ which( !is.na(Combined.eQTL.GWAS.Data$NES) & Combined.eQTL.GWAS.Data$Congruence == "Congruent") , ])[1] == 0){
+    if(dim(Combined.eQTL.GWAS.Data[ which(!is.na(Combined.eQTL.GWAS.Data$NES) & Combined.eQTL.GWAS.Data$Congruence == "Congruent") , ])[1] == 0)
       Congruentdata <- FALSE} else {Congruentdata <- TRUE
-      }
-    if(dim(Combined.eQTL.GWAS.Data[ which( !is.na(Combined.eQTL.GWAS.Data$NES) & Combined.eQTL.GWAS.Data$Congruence == "Incongruent") , ])[1] == 0){
+    
+    if(dim(Combined.eQTL.GWAS.Data[ which(!is.na(Combined.eQTL.GWAS.Data$NES) & Combined.eQTL.GWAS.Data$Congruence == "Incongruent") , ])[1] == 0)
       Incongruentdata <- FALSE} else {Incongruentdata <- TRUE
-      }
     
     ### For congruent data
     if(Congruentdata == TRUE & nrow(Combined.eQTL.GWAS.Data[ which( !is.na(Combined.eQTL.GWAS.Data$NES) & Combined.eQTL.GWAS.Data$Congruence == "Congruent") , ]) >=3){
@@ -270,33 +266,26 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     }
     
     ### For incongruent data
-    if(Incongruentdata == TRUE & nrow(Combined.eQTL.GWAS.Data[ which( !is.na(Combined.eQTL.GWAS.Data$NES) & Combined.eQTL.GWAS.Data$Congruence == "Incongruent") , ]) >=3){
+    if(Incongruentdata == TRUE & nrow(Combined.eQTL.GWAS.Data[ which( !is.na(Combined.eQTL.GWAS.Data$NES) & Combined.eQTL.GWAS.Data$Congruence == "Incongruent") , ]) >= 3) {
       pearson.incongruent <- suppressWarnings(cor.test(Combined.eQTL.GWAS.Data[ which( !is.na(Combined.eQTL.GWAS.Data$NES) & Combined.eQTL.GWAS.Data$Congruence == "Incongruent") , ]$NeglogeQTLpValue,
                                                        Combined.eQTL.GWAS.Data[ which( !is.na(Combined.eQTL.GWAS.Data$NES) & Combined.eQTL.GWAS.Data$Congruence == "Incongruent") , ]$Neglog10pvalue_GWAS,
                                                        method = "pearson"))
       pearson.incongruent.logic <- TRUE
-    } else {
-      if(congruence == TRUE){
+    } else if(congruence == TRUE){
         pearson.incongruent.logic <- FALSE
         pearson.incongruent <- list(NA,NA)
         pearson.incongruent$estimate <- 0.00000
         pearson.incongruent$p.value <- 1
         print("Not enough data to complete Pearson correlation for Incongruent eQTLs")
       }
-    }
     
     ### Print Results
-    if(congruence == FALSE){
-      if(pearson.congruent.logic == TRUE){
+    if(congruence == FALSE && pearson.congruent.logic == TRUE){
         out1 <- if(pearson.congruent.logic == TRUE){paste(sep = "", "eQTL analysis for gene ", gene, ": Pearson correlation: ", round(pearson.congruent$estimate, 3), ", p-value: ", formatC(pearson.congruent$p.value, format = "e", digits = 2))}
         pvalue1 <- pearson.congruent$p.value
         out <- data.frame(output = out1, pval = pvalue1)
         return(out)
-        
-      }
-    }
-    
-    if(congruence == TRUE){
+    } else if(congruence == TRUE){
       out1 <- if(pearson.congruent.logic == TRUE){paste(sep = "", "Congruent eQTL analysis for gene ", gene, ": Pearson correlation: ", round(pearson.congruent$estimate, 3), ", p-value: ", formatC(pearson.congruent$p.value, format = "e", digits = 2))}
       pvalue1 <- pearson.congruent$p.value
       out2 <- if(pearson.incongruent.logic == TRUE){paste(sep = "", "Incongruent eQTL analysis for gene ", gene, ": Pearson correlation: ", round(pearson.incongruent$estimate, 3), ", p-value: ", formatC(pearson.incongruent$p.value, format = "e", digits = 2))}
@@ -321,7 +310,9 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     
     ### Subset GWAS.df for gene of interest, check to make sure data is present
     gwas.data <- GWAS.df[which(GWAS.df$CHR == chromosome & GWAS.df$PHE == trait & GWAS.df$BP >= startpos & GWAS.df$BP <= stoppos & !(is.na(GWAS.df$P)) & !(is.na(GWAS.df$BETA))), ]
-    if(dim(gwas.data)[1] == 0) stop('Sorry, GWAS.df does not contain data for any SNPs in the ', paste(range), 'kb flanking the gene ', paste(gene), ' for the trait ', paste(trait))
+    if(dim(gwas.data)[1] == 0)
+      stop('Sorry, GWAS.df does not contain data for any SNPs in the ', paste(range), 'kb flanking the gene ', paste(gene), ' for the trait ', paste(trait))
+    
     if(dim(gwas.data[which(gwas.data$P <= sigpvalue_GWAS), ])[1] == 0) {
       print(paste(sep = "", 'WARNING: GWAS.df does not contain any SNPs with p-value < sigpvalue_GWAS within the ',
                   range, 'kb flanking the gene ', gene, ' for the trait ',
@@ -330,10 +321,15 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     
     ### Subset eQTL.df for gene of interest and tissue of interest, check to make sure data is present
     eqtl.data <- eQTL.df[which(eQTL.df$Gene.Symbol == gene & eQTL.df$P.Value <= sigpvalue_eQTL & !(is.na(eQTL.df$NES)) & !(is.na(eQTL.df$P.Value))), ]
-    if(dim(eqtl.data)[1] == 0) stop('Sorry, eQTL.df does not have any data for the gene ', paste(gene), ' meeting your sigpvalue_eQTL threshold')
+    if(dim(eqtl.data)[1] == 0)
+      stop('Sorry, eQTL.df does not have any data for the gene ', paste(gene), ' meeting your sigpvalue_eQTL threshold')
+   
     eqtl.data <- eqtl.data[which(eqtl.data$Tissue == tissue), ]
     eqtl.data$P.Value <- ifelse(eqtl.data$P.Value  <= 1e-300, 1e-300,eqtl.data$P.Value)
-    if(dim(eqtl.data)[1] == 0) stop('Sorry, there are no eQTLs for the tissue', paste(tissue), ' with a p-value < sigeQTL')
+    
+    if(dim(eqtl.data)[1] == 0)
+      stop('Sorry, there are no eQTLs for the tissue', paste(tissue), ' with a p-value < sigeQTL')
+
     eqtl.data <- dplyr::ungroup(eqtl.data)
     
     
@@ -408,9 +404,7 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
       pvalue1 <- pearson.congruent$p.value
       out <- data.frame(output= out1, pval = pvalue1)
       return(out)
-    }
-    
-    if(congruence == TRUE){
+    } else if(congruence == TRUE){
       out1 <- if(pearson.congruent.logic == TRUE){paste(sep = "", "Congruent eQTL analysis for tissue ", tissue, ": Pearson correlation: ", round(pearson.congruent$estimate, 3), ", p-value: ", formatC(pearson.congruent$p.value, format = "e", digits = 2))}
       pvalue1 <- pearson.congruent$p.value
       out2 <- if(pearson.incongruent.logic == TRUE){paste(sep = "", "Incongruent eQTL analysis for tissue ", tissue, ": Pearson correlation: ", round(pearson.incongruent$estimate, 3), ", p-value: ", formatC(pearson.incongruent$p.value, format = "e", digits = 2))}
@@ -546,12 +540,21 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
       }
     }
     
-    if(length(gene) <= 1) {
-      stop('Please provide a list of at least two genes, in the format c("GENE1", "GENE2" ... ), to complete this function')}
-    if(length(tissue) <= 1 & ("all" %in% tissue) == FALSE){print(paste(sep = "", 'eQTL analysis will be completed for tissue:'))}
-    if(length(tissue) >= 2){print(paste(sep = "", 'MultiTissue eQTL analysis, collapsing by method ', CollapseMethod ,' will be completed across tissues:'))}
-    if(length(tissue) <= 1 & ("all" %in% tissue) == TRUE){print(paste('PanTissue eQTL analysis, collapsing by method ', CollapseMethod ,' will be completed across all tissues in eQTL.df'))}
-    if((length(tissue) <= 1 & ("all" %in% tissue) == FALSE) | (length(tissue) >= 2)){print(paste("'",as.character(unique(tissue)),"'",collapse=", ",sep=""))}
+    if(length(gene) <= 1)
+      stop('Please provide a list of at least two genes, in the format c("GENE1", "GENE2" ... ), to complete this function')
+
+    if(length(tissue) <= 1 & ("all" %in% tissue) == FALSE)
+      print(paste(sep = "", 'eQTL analysis will be completed for tissue:'))
+
+    if(length(tissue) >= 2)
+      print(paste(sep = "", 'MultiTissue eQTL analysis, collapsing by method ', CollapseMethod ,' will be completed across tissues:'))
+
+    if(length(tissue) <= 1 & ("all" %in% tissue) == TRUE)
+      print(paste('PanTissue eQTL analysis, collapsing by method ', CollapseMethod ,' will be completed across all tissues in eQTL.df'))
+
+    if((length(tissue) <= 1 & ("all" %in% tissue) == FALSE) | (length(tissue) >= 2))
+      print(paste("'",as.character(unique(tissue)),"'",collapse=", ",sep=""))
+
     print('For genes:')
     print(paste("'",as.character(unique(gene)),"'",collapse=", ",sep=""))
     lapply(gene, eQTpLot.gene.list) %>% dplyr::bind_rows() -> results
@@ -565,11 +568,13 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
   ### Run Tissue List Function, if requested
   
   if(TissueList==TRUE){
-    if(length(gene) >= 2) {
-      stop('Please provide only a single gene to perform a TissueList analysis')}
-    if(length(tissue) <= 1 & tissue != "all") {
-      stop('Please provide at least two tissues to perform a TissueList analysis, or set tissue = "all" to perform a TissueList analysis for the gene ', paste(gene), ' across all tissues in eQTL.df')}
-    if(tissue == "all"){tissue <- as.character(unique(eQTL.df$Tissue))}
+    if(length(gene) >= 2)
+      stop('Please provide only a single gene to perform a TissueList analysis')
+    if(length(tissue) <= 1 & tissue != "all")
+      stop('Please provide at least two tissues to perform a TissueList analysis, or set tissue = "all" to perform a TissueList analysis for the gene ', paste(gene), ' across all tissues in eQTL.df')
+    if(tissue == "all")
+      tissue <- as.character(unique(eQTL.df$Tissue))
+
     print(paste(sep = "", 'eQTpLot TissueList analysis will be completed for tissues:'))
     print(paste(as.character(unique(tissue)),"'",collapse=", ",sep=""))
     print('For gene:')
@@ -594,22 +599,28 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
   
   ### Subset GWAS.df for gene of interest, check to make sure data is present
   gwas.data <- GWAS.df[which(GWAS.df$CHR == chromosome & GWAS.df$PHE == trait & GWAS.df$BP >= startpos & GWAS.df$BP <= stoppos & !(is.na(GWAS.df$P)) & !(is.na(GWAS.df$BETA))), ]
-  if(dim(gwas.data)[1] == 0) stop('Sorry, GWAS.df does not contain data for any SNPs in the ', paste(range), 'kb flanking the gene ', paste(gene), ' for the trait ', paste(trait))
+  if(dim(gwas.data)[1] == 0)
+    stop('Sorry, GWAS.df does not contain data for any SNPs in the ', paste(range), 'kb flanking the gene ', paste(gene), ' for the trait ', paste(trait))
+
   if(dim(gwas.data[which(gwas.data$P <= sigpvalue_GWAS), ])[1] == 0) {
     NoFisher<-TRUE; print(paste(sep = "", 'WARNING: GWAS.df does not contain any SNPs with p-value < sigpvalue_GWAS within the ',
                                 range, 'kb flanking the gene ', gene, ' for the trait ',
                                 trait, '. eQTL Enrcihment Plot statistics will not be calculated'))
-  } else {NoFisher <- FALSE}
+  } else {
+    NoFisher <- FALSE
+  }
   
   
   ### Subset eQTL.df for tissue and gene of interest, check to make sure data is present
-  if(length(tissue) >= 2 & ("all" %in% tissue) == FALSE){
+  if(length(tissue) >= 2 & ("all" %in% tissue) == FALSE) {
     eQTL.df <- eQTL.df[which(eQTL.df$Tissue %in% tissue), ]
   }
+
   print(paste(sep = "", 'eQTL analysis will be completed for tissues ',  paste("'",as.character(unique(tissue)),"'",collapse=", ",sep=""), ' and for gene ', paste(gene)))
   
   eqtl.data <- eQTL.df[which(eQTL.df$Gene.Symbol == gene & eQTL.df$P.Value <= sigpvalue_eQTL & !(is.na(eQTL.df$NES)) & !(is.na(eQTL.df$P.Value))), ]
-  if(dim(eqtl.data)[1] == 0) stop('Sorry, eQTL.df does not have any data for the gene ', paste(gene), ' meeting your sigpvalue_eQTL threshold')
+  if(dim(eqtl.data)[1] == 0)
+    stop('Sorry, eQTL.df does not have any data for the gene ', paste(gene), ' meeting your sigpvalue_eQTL threshold')
   if(any(tissue == "all") == TRUE | (length(tissue) >= 2) == TRUE){PanTissue <- TRUE}
   if(any(tissue == "all") == FALSE & (length(tissue) >= 2) == FALSE){PanTissue <- FALSE}
   

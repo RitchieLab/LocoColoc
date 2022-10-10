@@ -108,4 +108,3 @@ sed "s/TRAITNAME/$trait/" $colocquial_dir/summarize_results.bsub | sed "s|COLOCQ
 
 #run bsub to collect all of the COLOC results into 1 file
 bsub < summarize_results.bsub -q $bsub_queue -R "rusage[mem=16GB]" -M 16G
-

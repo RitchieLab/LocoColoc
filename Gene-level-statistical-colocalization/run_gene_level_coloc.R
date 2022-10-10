@@ -144,7 +144,7 @@ message("eQTL data loaded")
 N.eqtl <- read.table(eqtl.sample.size.file, header=T, stringsAsFactors=FALSE)
 N.eqtl.tissue <- N.eqtl[which(N.eqtl[, 1] == tissue), 2]
 
-if (length(which(N.eqtl[,1] == tissue)) != 1)
+if (length(which(N.eqtl[, 1] == tissue)) != 1)
   stop("The eqtl sample size file does not contain the tissue of interest in column 1")
 
 eqtl.gene.id.split <- as.character(unlist(strsplit(eqtl[, "gene_id"], "[.]")))

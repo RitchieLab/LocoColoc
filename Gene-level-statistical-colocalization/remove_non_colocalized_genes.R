@@ -36,6 +36,10 @@ h4 = data[data[, .I[Coloc.H4 == max(Coloc.H4)], by=Gene]$V1]
 #h4 = h4[-which(duplicated(h4[,"Gene"])),]
 gene.list.h3 = h3[which(h3[,"Coloc.H3"]<=coloc.p.h3.threshold),"Gene"]
 gene.list.h4 = h4[which(h4[,"Coloc.H4"]>=coloc.p.h4.threshold),"Gene"]
+
 gene.list = intersect(as.data.frame(gene.list.h3),as.data.frame(gene.list.h4))
-if(length(gene.list)==0) stop("No genes that pass the LD contamination filter") 
-else write.table(paste0(output.folder,"/Final_list_of_genes_no_ld_contamination.txt"),row.names=F,col.names=F,sep="\t",quote=F)
+if(length(gene.list) == 0) {
+  stop("No genes that pass the LD contamination filter") 
+} else {
+write.table(paste0(output.folder,"/Final_list_of_genes_no_ld_contamination.txt"),row.names=F,col.names=F,sep="\t",quote=F)
+}

@@ -10,6 +10,7 @@ reference_folder=$PWD/reference_data
 output_folder=$PWD/output
 mkdir $PWD/out
 
+cd $PWD/output/reference_data
 input=Input_gene_trait_tissue_data_ensg.txt
 genes_list=($(awk '{print $1}' ${input}))
 traits_list=($(awk '{print $2}' ${input}))

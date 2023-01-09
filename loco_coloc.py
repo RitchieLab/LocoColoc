@@ -3,13 +3,23 @@ import argparse
 import os
 import subprocess
 
-GENE_LEVEL_COLOC_ARGS = {
+def init_glc_argparse(argv):
+    parser = argparse.ArgumentParser(description="Gene Level Statistical Colocalization")
+    parser.add_argument("-hz", "--harmonization", required=True, help="Full path to harmonization file to run. Read GLC ReadMe for default harmonization script.")
+     
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-f","--file", help="Full path input for file input for running gene level coloc. Mutually exclusive with -i." )
+    group.add_argument("-i", "--input",help="Manual input for running gene level coloc. Mutually exclusive with -f." )
 
-}
+    return parser.parse_args(argv)
 
-BASE = os.getcwd()
 
-def gene_level_coloc(argv):
+def gene_level_coloc(args):
+
+    pri
+    if not args.harmonization and not args.file:
+        print("Must include path to both harmonization and input file.")
+        return
 
     def run_harmonization(harmonization_file):
         print('Running harmonization with {}...'.format(harmonization_file))
@@ -18,48 +28,37 @@ def gene_level_coloc(argv):
     def run_example():
         print('running example')
 
-    path = BASE + "/Gene-level-statistical-colocalization/"
-    parser = argparse.ArgumentParser(description="Gene Level Statistical Colocalization")
-    parser.add_argument("-z", "--harmonization", required=False, help="Optional full path to harmonization file to run. If left empty, default harmonization script will be run.")
-
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument("-f","--file", help="Full path input for file input for running gene level coloc. Mutually exclusive with -i." )
-    group.add_argument("-i", "--input",help="Manual input for running gene level coloc. Mutually exclusive with -f." )
-    args = parser.parse_args(argv)
-
-    if args.harmonization == None:
-        harmonization = path + 'examples/harmonized_gwas/default_run_harmonization'
-    else:
-        harmonization = args.harmonization
-
-    if args.file == None and args.input == None:
-        run_harmonization(harmonization)
-        run_example()
-    elif args.file == None:
-        print(args.input)
-    elif args.input == None:
-        print(args.file)
-    else:
-        pass
-
-    print()
+    harmonization = args.harmonization
+    f = args.file
 
 
 
+
+def get_args(argv):
+    parser = argparse.ArgumentParser(description="Loco Coloc")
+    parser.add_argument("-qt", "--eqtplot", action=argparse.BooleanOptionalAction, help="Optional arg to include to use eQTpLot")
+    parser.add_argument("-hz", "--harmonization", help="Path to harmonization file to run")
+    parser.add_argument("-f", "--file", help="Path to input file")
+
+    g = parser.add_mutually_exclusive_group()
+    g.add_argument("-glc", "--gene-level-coloc", help="Run Gene Level Statistical Colocalization")
+    g.add_argument("-cql", "--colocquial", help="Run ColocQuiaL")
+
+    return parser.parse_args(argv)
 
 
 if __name__ == "__main__":
-    package = sys.argv[1].lower()
-    if package == "-h" or package == "--help":
-        print("Usage: loco_coloc.py <package>. Case insensitive")
-        print("Packages available: Gene_Level_Coloc/GLC, ColocQuiaL/CQL, eQTpLoT/EQT.")
-        print("Use loco_coloc.py <package> -h/--help for help running individual tools.")
-    elif package == "gene_level_coloc" or package == "glc":
-        gene_level_coloc(sys.argv[2:])
-    elif package == "eqtplot" or package == "eqt":
-        pass
-    elif package == "colocquial" or package == "cql":
-        pass
-    else:
-        print("Please use with -h/--help for usage.")
 
+    args = get_args(sys.argv[1:])
+    
+    if args.gene_level_coloc is not None:
+        gene_level_coloc(args)
+    elif args.colocquial is not None:
+        #colocquial()
+        pass
+    
+    if args.eqtplot is True:
+        #eqtplot()
+        pass
+
+#/Users/nimay/Desktop/examples_glc/harmonized_gwas/run_Harmonization

@@ -3,6 +3,15 @@ import argparse
 import os
 import subprocess
 
+def yes_no_input(prompt):
+    while True:
+        ans = input(prompt).casefold()
+        if ans == 'y':
+            return True
+        elif ans == 'n':
+            return False
+
+
 def init_glc_argparse(argv):
     parser = argparse.ArgumentParser(description="Gene Level Statistical Colocalization")
     parser.add_argument("-hz", "--harmonization", required=True, help="Full path to harmonization file to run. Read GLC ReadMe for default harmonization script.")
@@ -15,23 +24,33 @@ def init_glc_argparse(argv):
 
 
 def gene_level_coloc(args):
-
-    pri
     if not args.harmonization and not args.file:
         print("Must include path to both harmonization and input file.")
         return
 
     def run_harmonization(harmonization_file):
+        i = harmonization_file.rfind('/')
+        harm_path = harmonization_file[:i]
+
         print('Running harmonization with {}...'.format(harmonization_file))
-        subprocess.run(['bash', harmonization_file])
+        subprocess.run(['bash', harmonization_file, harm_path])
 
     def run_example():
         print('running example')
 
-    harmonization = args.harmonization
+    i = args.harmonization.rfind('/')
+    harm_path = args.harmonization[:i]
+
+    override = True
+    if os.path.exists('{}/GLGC_LDL_GWAS_harmonized.txt.gz'.format(harm_path)):
+        override = yes_no_input("Harmonized output txt.gz file exists. Re-run harmonization and override existing file? (y/n)")
+        
+    if override:
+        run_harmonization(args.harmonization)
+    else:
+        print("Skipping harmonization...")
+
     f = args.file
-
-
 
 
 def get_args(argv):
@@ -61,4 +80,5 @@ if __name__ == "__main__":
         #eqtplot()
         pass
 
-#/Users/nimay/Desktop/examples_glc/harmonized_gwas/run_Harmonization
+#local - /Users/nimay/Desktop/examples_glc/harmonized_gwas/run_Harmonization
+#lpc - ~/repos/LocoColoc/Gene-level-statistical-colocalization/example_data/harmonized_gwas/run_Harmonization

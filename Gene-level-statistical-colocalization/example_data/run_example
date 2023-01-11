@@ -2,14 +2,14 @@
 
 # DOWNLOAD DATA HERE: https://ritchielab.org/files/Lipid_Pleiotropy_project/gene_level_coloc_example_data.tar.gz
 
-path=$PWD/example_data
-path_gwas=$PWD/example_data/harmonized_gwas
-path_gtex=$PWD/example_data/GTEx
-reference_folder=$PWD/example_data/reference_data
-output_folder=$PWD/example_data/output
-mkdir $PWD/example_data/out
+path=$PWD
+path_gwas=$PWD/harmonized_gwas
+path_gtex=$PWD/GTEx
+reference_folder=$PWD/reference_data
+output_folder=$PWD/output
+mkdir $PWD/out
 
-cd $PWD/example_data/output/reference_data
+cd $PWD/output/reference_data
 input=Input_gene_trait_tissue_data_ensg.txt
 genes_list=($(awk '{print $1}' ${input}))
 traits_list=($(awk '{print $2}' ${input}))

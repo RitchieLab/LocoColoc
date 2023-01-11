@@ -46,6 +46,7 @@ def gene_level_coloc(args):
         override = yes_no_input("Harmonized output txt.gz file exists. Re-run harmonization and override existing file? (y/n)")
         
     if override:
+        os.remove('{}/GLGC_LDL_GWAS_harmonized.txt.gz'.format(harm_path))
         run_harmonization(args.harmonization)
     else:
         print("Skipping harmonization...")

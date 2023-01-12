@@ -1,1 +1,12 @@
-# This is a consolidation of three R packages: ColocQuiaL, eQTplot, and a Gene-based-statistical-colocalization
+# LocoColoc is a consolidation of three R packages: ColocQuiaL, eQTplot, and Gene-level-statistical-colocalization (GLC).
+
+## Setting up & Using LocoColoc:
+It is recommended to first read the individual READMEs for each of the packages above, which can be found in their respectively named folders under LocoColoc. This README only provides information on usage of the loco_coloc script and its arguments.
+
+Below is a list of the parameters of running loco_coloc.py:
+* -*h* Show the help menu.
+* -*glc* Path to folder containing run_gene_level_coloc.R (./GLC). Mutually exclusive with ColocQuiaL flag
+* -*cql* In progress. Mutually exclusive with ColocQuiaL flag.
+* -*f* Path to JSON input file containing params. GLC example and template found in ./GLC. In progress for cql
+
+

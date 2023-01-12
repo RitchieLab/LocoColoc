@@ -10,7 +10,7 @@ The following libraries are required to run this sofware:
 * Installed [GCTA](https://cnsgenomics.com/software/gcta/#Overview) v1.26 or higher
 
 ### Harmonization between GWAS and eQTL datasets
-* Seee https://github.com/hakyimlab/MetaXcan/wiki/Tutorial:-GTEx-v8-MASH-models-integration-with-a-Coronary-Artery-Disease-GWAS for basic steps on harmonizing between GWAS and GTEx v8 datasets so that they are on the same genome build (run_harmonization code in the example also shows the basic protocol for harmonization between a GLGC lipid dataset and GTEx v8 eQTL dataset)
+* See https://github.com/hakyimlab/MetaXcan/wiki/Tutorial:-GTEx-v8-MASH-models-integration-with-a-Coronary-Artery-Disease-GWAS for basic steps on harmonizing between GWAS and GTEx v8 datasets so that they are on the same genome build (run_harmonization code in the example also shows the basic protocol for harmonization between a GLGC lipid dataset and GTEx v8 eQTL dataset)
 
 ### Primary signals protocol:
 * Note that the following protocol is applied to each combination of gene, trait (quantitative or case/control for a given GWAS dataset), and tissue. We run statistical colocalization between GWAS summary statistics and gene expression summary statistics obtained from GTEx v8.

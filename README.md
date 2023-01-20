@@ -9,4 +9,5 @@ Below is a list of the parameters of running loco_coloc.py:
 * -*cql* In progress. Mutually exclusive with ColocQuiaL flag.
 * -*f* Path to JSON input file containing params. GLC example and template found in ./GLC. In progress for cql
 
-
+## Gene-Level-Coloc Example Input & Template Files
+In the GLC folder, there are two JSON files: one example_input file, and one blank input template file. All paths for file/folder variables in these JSON files should be specified relative to the LocoColoc folder where the script is. 

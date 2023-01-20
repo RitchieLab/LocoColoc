@@ -73,6 +73,9 @@ def gene_level_coloc(args):
     coloc_args = json.load(f)
     run_glc(args.gene_level_coloc, coloc_args)
 
+def colocquial(args):
+    print(args)
+
 
 def get_args(argv):
     parser = argparse.ArgumentParser(description="Loco Coloc")
@@ -93,11 +96,11 @@ if __name__ == "__main__":
     if args.gene_level_coloc is not None:
         gene_level_coloc(args)
     elif args.colocquial is not None:
-        #colocquial()
-        pass
+        colocquial(args)
     
     if args.eqtplot is True:
         #eqtplot()
         pass
 
 #python loco_coloc.py -glc ./GLC -f ./GLC/example_input.JSON
+#/home/nimay512/repos/LocoColoc

@@ -70,7 +70,6 @@ gg_regional_association_plink <- function(df, lead_snps = NULL, rsid = rsid, chr
   head(df)
 
   #error of SNP location disagreement occurs somewhere below
-  #use a trycatch to see if the rsid-position agrees with the LD reference panel (region_recomb)
   #if error found, stop plotting and alert user
   #based on the lead SNP get the other SNPs at the locus
   locus_snps <- df %>%
@@ -174,10 +173,13 @@ ggbio_genetrack <- function(chrom_str, BPStart, BPStop) {
     #between gene_region <-GRange(...) and plot <- plot@ggplot in ggbio_genetrack function
     print("TESTING TESTING TESTING")
     print(gene_region)
-    plot <- tryCatch({
-        autoplot(Homo.sapiens, which = gene_region) + xlim(BPStart,BPStop) + scale_x_continuous(expand=c(0,0))
+    
+    plot <- autoplot(Homo.sapiens, which = gene_region) + xlim(BPStart,BPStop) + scale_x_continuous(expand=c(0,0))
+
+    plot = tryCatch({
+      autoplot(Homo.sapiens, which = gene_region) + xlim(BPStart,BPStop) + scale_x_continuous(expand=c(0,0))
       }, error = function(e) {
-        print("Error within ggbio autoplot occurred while plotting gene track.")
+       print("Error within ggbio autoplot occurred while plotting gene track.")
         print(e)
         return(NULL)
     })
@@ -311,13 +313,16 @@ plot_trait_data_first_iteration <- function(colocInputFile, qtl_all_chrom, leadS
     
     #combine the RA plot and the gene track plot
 
-    RA_plot <- tryCatch({
+    #RA_plot <- ggarrange(RA_plot, gene_track_plot, widths=c(1,1),heights=c(5,3))
+
+    RA_plot = tryCatch({
         ggarrange(RA_plot, gene_track_plot, widths=c(1,1),heights=c(5,3))
-      }, error = function(e) {
+      }, 
+      error = function(e) {
         print("Error within ggbio ggarrange occurred while plotting first iteration.")
         print(e)
         return(NULL)
-      })
+    })
     
     return (RA_plot)
 }
@@ -332,13 +337,15 @@ gene_track_plot <- function(qtl_all_chrom, qtl_all_pvalue) {
   gene_track_plot <- ggbio_genetrack(chrom_str, colocStart, colocStop)
   
   #combine the RA plot and the gene track plot
-  RA_plot <- tryCatch({
+  #RA_plot <- ggarrange(RA_plot, gene_track_plot, widths=c(1,1),heights=c(5,3))
+
+  RA_plot = tryCatch({
         ggarrange(RA_plot, gene_track_plot, widths=c(1,1),heights=c(5,3))
       }, error = function(e) {
         print("Error within ggbio ggarrange occurred while plotting first iteration.")
         print(e)
         return(NULL)
-      })
+  })
   return (RA_plot)
 }
 
@@ -474,7 +481,10 @@ eqtl_colocalization <- function() {
 
   #combine the RA plot and the gene track plot if not null
   if (!is.null(gene_track_plot)){
-      print_gene_track_plot(gene_track_plot, RA_plot)
+      RA_plot <- ggarrange(RA_plot, gene_track_plot, widths=c(1,1),heights=c(5,3))
+      pdf(file = paste0(lead_SNP, "_", geneSymbol, "_", tissue,".pdf"), paper = 'USr', width = 15, height = 20)  
+      print(RA_plot)
+      dev.off()
   }
 }
 
@@ -535,7 +545,10 @@ sqtl_colocalization <- function() {
     gene_track_plot <- ggbio_genetrack(chrom_str, colocStart, colocStop)
     
     if (!is.null(gene_track_plot)){
-      print_gene_track_plot(gene_track_plot, RA_plot)
+      RA_plot <- ggarrange(RA_plot, gene_track_plot, widths=c(1,1),heights=c(5,3))
+      pdf(file = paste0(lead_SNP, "_", geneSymbol, "_", tissue,".pdf"), paper = 'USr', width = 15, height = 20)  
+      print(RA_plot)
+      dev.off()
     }
   }
 }

@@ -65,7 +65,7 @@
     "glc": {
         "setup": {
             "glc_dir": "",
-            "": ""
+            "harmonization_file": ""
         },
         "params": {
             "chr": "1",

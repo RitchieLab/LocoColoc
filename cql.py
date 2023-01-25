@@ -64,8 +64,8 @@ def run_batch(analysis_dir):
     subprocess.run(cmd, shell=True)
 
 
-def run_single(analysis_dir):
-    cmd = 'cd {} && bash single_locus.sh'.format(analysis_dir)
+def run_single(analysis_dir, cql_dir):
+    cmd = 'cd {} && bash single_locus.sh {}'.format(analysis_dir, cql_dir)
     subprocess.run(cmd, shell=True)
 
 
@@ -81,4 +81,4 @@ def run_cql(args):
     if setup_args['batch']:
         run_batch(analysis_dir)
     else:
-        run_single(analysis_dir) 
+        run_single(analysis_dir, cql_dir) 

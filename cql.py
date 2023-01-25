@@ -3,7 +3,7 @@ import subprocess
 
 from cql_consts import setup_config_r_keys, setup_config_sh_keys, qtl_config_r_keys, qtl_config_sh_keys
 
-def create_config_files(setup_args, qtl_args, cql_dir, analysis_dir):
+def generate_config_files(setup_args, qtl_args, cql_dir, analysis_dir):
     with open('{}/setup_config.sh'.format(cql_dir), 'w') as setup_sh:
         for key in setup_config_sh_keys:
             setup_sh.write('{}=\"{}\"\n'.format(key, setup_args[key]))
@@ -59,6 +59,16 @@ def create_config_files(setup_args, qtl_args, cql_dir, analysis_dir):
     qtl_r.close()
 
 
+def run_batch(analysis_dir):
+    cmd = 'cd {} && bash colocquial_wrapper.sh'.format(analysis_dir)
+    subprocess.run(cmd, shell=True)
+
+
+def run_single(analysis_dir):
+    cmd = 'cd {} && bash single_locus.sh'.format(analysis_dir)
+    subprocess.run(cmd, shell=True)
+
+
 def run_cql(args):
     config = open(args.file)
     input = json.load(config)['cql']
@@ -66,7 +76,9 @@ def run_cql(args):
     cql_dir = setup_args['colocquial_dir']
     analysis_dir = '{}/analysis'.format(cql_dir)
 
-    create_config_files(setup_args, input['qtl_config'], cql_dir, analysis_dir)
+    generate_config_files(setup_args, input['qtl_config'], cql_dir, analysis_dir)
 
-    cmd = 'cd {} && bash colocquial_wrapper.sh'.format(analysis_dir)
-    subprocess.run(cmd, shell=True)
+    if setup_args['batch']:
+        run_batch(analysis_dir)
+    else:
+        run_single(analysis_dir) 

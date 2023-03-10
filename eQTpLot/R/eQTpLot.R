@@ -96,7 +96,6 @@
 #require(LDheatmap)
 #require(ggplotify)
 
-
 eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
                     sigpvalue_GWAS = 5e-8, sigpvalue_eQTL = 0.05,
                     tissue = "all", range = 200, NESeQTLRange = c(NA,NA), 
@@ -351,7 +350,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
 
     eqtl.data <- dplyr::ungroup(eqtl.data)
     
-    
     ### Join GWAS and eQTL data, check to make sure there is at least some overlap in SNPs between the two datasets
     gwas.data$SNP <- as.factor(gwas.data$SNP)
     eqtl.data$SNP.Id <- as.factor(eqtl.data$SNP.Id)
@@ -361,7 +359,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     if(dim(Combined.eQTL.GWAS.Data)[1] == 0) {
       stop('Sorry, for the gene ', paste(gene), ' and the trait ', paste(trait), ' there is no overlap between the SNPs in your GWAS.df and eQTL.df')
     }
-    
     
     ### Determine directions of effect and congruence
     Combined.eQTL.GWAS.Data$DirectionOfEffect_GWAS <- ifelse(Combined.eQTL.GWAS.Data$BETA < 0, "Negative", ifelse(Combined.eQTL.GWAS.Data$BETA > 0, "Positive", NA))
@@ -543,7 +540,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
   
   #######################
   ### Run Gene List Function, if requested
-  
   if(GeneList==TRUE) {
     
     if(CollapseMethod == "meta" & "N" %in% colnames(eQTL.df)==FALSE & interactive() == TRUE) {
@@ -594,7 +590,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
   
   #######################
   ### Run Tissue List Function, if requested
-  
   if(TissueList==TRUE) {
     if(length(gene) >= 2) {
       stop('Please provide only a single gene to perform a TissueList analysis')
@@ -617,7 +612,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     print(results$output)
     return("Complete")
   }
-  
   
   
   ########################
@@ -693,7 +687,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
       eqtl.data$N <- 100
     }
     
-    
     eqtl.data$sign <- ifelse(eqtl.data$NES < 0, -1, 1)
     eqtl.data$Z <- (qnorm(eqtl.data$P.Value/2,lower.tail=FALSE))*(eqtl.data$sign)
     eqtl.data$W <- sqrt(eqtl.data$N)
@@ -757,7 +750,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
 
   eqtl.data <- dplyr::ungroup(eqtl.data)
   
-  
   ### Join GWAS and eQTL data, check to make sure there is at least some overlap in SNPs between the two datasets
   gwas.data$SNP <- as.factor(gwas.data$SNP)
   eqtl.data$SNP.Id <- as.factor(eqtl.data$SNP.Id)
@@ -767,7 +759,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
   if(dim(Combined.eQTL.GWAS.Data)[1] == 0) {
     stop('Sorry, for the gene ', paste(gene), ' and the trait ', paste(trait), ' there is no overlap between the SNPs in your GWAS.df and eQTL.df')
   }
-  
   
   ### Determine directions of effect and congruence
   Combined.eQTL.GWAS.Data$DirectionOfEffect_GWAS <- ifelse(Combined.eQTL.GWAS.Data$BETA < 0, "Negative", ifelse(Combined.eQTL.GWAS.Data$BETA > 0, "Positive", NA))
@@ -795,6 +786,7 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     Incongruentdata <- FALSE} else {Incongruentdata <- TRUE
     }
   
+
   ########################
   ### LD Calculations
   if(isTRUE(LD.df) == FALSE) {
@@ -834,7 +826,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
       names(Combined.eQTL.GWAS.Data)[names(Combined.eQTL.GWAS.Data) == "SNP_B"] <- "SNP_Bincong"
       Combined.eQTL.GWAS.Data.incong <- subset(Combined.eQTL.GWAS.Data, SNP == mostsigsnp.incong)
     }
-    
     
     ### Filter and combine LD data, generate square LD matrix
     LD.df <- LD.df[which(LD.df$SNP_A %in% Combined.eQTL.GWAS.Data$SNP), ]
@@ -879,7 +870,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
   }
   
   
-  
   ########################
   ### Generate main plot
   print("Generating main plot...")
@@ -918,7 +908,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     ggplot2::geom_hline(yintercept=-log10(sigpvalue_GWAS), linetype="solid", color = "red", size=0.5) +
     ggplot2::theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank()) +
     ggplot2::theme(plot.margin = unit(c(0,1,-0.8,0), "cm"))
-  
   
   ### If congruence is TRUE, add congruent and incongruent data
   if(congruence == TRUE) {
@@ -983,7 +972,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     p1 <- p1 + ggrepel::geom_label_repel(aes(x=BP, y=Neglog10pvalue_GWAS, label = ifelse(SNP == mostsigsnp.incong, SNP, ""), fontface = "bold"),
                                          color = "#990000", size =4, data = Combined.eQTL.GWAS.Data, max.overlaps = Inf, force = 5, box.padding = 3, min.segment.length = unit(0, 'lines'))
   }
-  
   
   ########################
   ### Generate Gene Tracks
@@ -1184,7 +1172,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
     p2 <- p2 + ggplot2::scale_fill_manual(labels = c("Incongruent" = "Incongruent eQTL", "Non-eQTL" = "Non-eQTL"), values = c("Incongruent" = "#990000", "Non-eQTL" = "#C0C0C0")) +
       ggplot2::guides(fill = guide_legend(title = NULL))
   }
-  
   
   
   ########################

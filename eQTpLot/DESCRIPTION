@@ -42,4 +42,3 @@ Imports:
 Depends: 
     ggplot2 (>= 3.3.0),
     R (>= 3.5.0)
-    

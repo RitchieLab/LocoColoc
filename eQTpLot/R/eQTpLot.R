@@ -105,6 +105,8 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
                     res = 300, wi = "wi", CollapseMethod = "min",
                     getplot = TRUE, saveplot = TRUE,
                     GeneList = FALSE, TissueList = FALSE) {
+
+  print("testing testing")
   
   ######################################
   ######## eQTpLot.gene.list SubFunction
@@ -1344,7 +1346,9 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
   }
 
   if(PanTissue == TRUE) {
-    tissuetitle <- paste(tissue, "analysis, eQTLs collapsed by", CollapseMethod) else tissuetitle <- paste("In", tissue)
+    tissuetitle <- paste(tissue, "analysis, eQTLs collapsed by", CollapseMethod)
+  } else { 
+    tissuetitle <- paste("In", tissue)
   }
   
   if(isTRUE(LD.df) == FALSE & Incongruentdata == FALSE) {

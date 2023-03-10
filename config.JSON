@@ -95,5 +95,39 @@
             "ld_folder": "",
             "eqtl_sample_size_file": "./GLC/example_data/GTEx/GTEx_v8_PredictDB_tissues_num_samples.txt"
         }
+    },
+    "eqt": {
+        "required": {
+            "eQTL.df": "",
+            "GWAS.df": "",
+            "gbuild": "hg19",
+            "gene": "",
+            "sigpvalue_eQTL": "",
+            "sigpvalue_GWAS": "",
+            "tissue": "",
+            "trait": ""
+        },
+        "optional": {
+            "Genes.df": "",
+            "LD.df": "",
+            "congruence": "",
+            "genometrackheight": "",
+            "getplot": "",
+            "LDcolor": "",
+            "LDmin": "",
+            "leadSNP": "",
+            "NESeQTLRange": "",
+            "R2min": "",
+            "range": "",
+            "res": "",
+            "saveplot": "",
+            "wi": "",
+            "xlimd": "",
+            "ylima": "",
+            "ylimd": "",
+            "CollapseMethod": "",
+            "Gene.List": "",
+            "Tissue.List": ""
+        }
     }
 }

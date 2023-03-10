@@ -8,7 +8,7 @@ from eqt import run_eqt
 def get_args(argv):
     parser = argparse.ArgumentParser(description="Loco Coloc")
     parser.add_argument("-f", "--file", help="Path to config file.")
-    parser.add_argument("-qt", "--eqt", action=argparse.BooleanOptionalAction, help="Optional arg to include to run eQTpLot.")
+    parser.add_argument("-eqt", "--eqtplot", action=argparse.BooleanOptionalAction, help="Optional arg to include to run eQTpLot.")
 
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-glc', '--gene-level-coloc', action='store_true')
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     elif args.colocquial:
         run_cql(args)
     
-    if args.eqt is True:
+    if args.eqtplot is True:
         run_eqt(args)
 
 #python loco_coloc.py -glc ./GLC -f ./GLC/example_input.JSON

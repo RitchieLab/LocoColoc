@@ -3,6 +3,7 @@ import argparse
 
 from glc import run_glc
 from cql import run_cql
+from eqt import run_eqt
 
 def get_args(argv):
     parser = argparse.ArgumentParser(description="Loco Coloc")
@@ -29,7 +30,6 @@ if __name__ == "__main__":
         run_cql(args)
     
     if args.eqt is True:
-        pass
+        run_eqt(args)
 
 #python loco_coloc.py -glc ./GLC -f ./GLC/example_input.JSON
-#/home/nimay512/repos/LocoColoc

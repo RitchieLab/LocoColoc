@@ -65,7 +65,7 @@
     },
     "glc": {
         "setup": {
-            "glc_dir": "",
+            "glc_dir": "./GLC",
             "harmonization_file": ""
         },
         "params": {
@@ -98,18 +98,18 @@
     },
     "eqt": {
         "required": {
-            "eQTL.df": "",
-            "GWAS.df": "",
+            "gwas_df": "./eQTpLot/data/GWAS.df.example.RData",
+            "eqtl_df": "./eQTpLot/data/eQTL.df.example.RData",
             "gbuild": "hg19",
-            "gene": "",
+            "gene": "BBS1",
             "sigpvalue_eQTL": "",
             "sigpvalue_GWAS": "",
-            "tissue": "",
-            "trait": ""
+            "tissue": "Adrenal_Gland",
+            "trait": "LDL"
         },
         "optional": {
-            "Genes.df": "",
-            "LD.df": "",
+            "genes_df": "",
+            "ld_df": "",
             "congruence": "",
             "genometrackheight": "",
             "getplot": "",

@@ -31,5 +31,3 @@ if __name__ == "__main__":
     
     if args.eqtplot is True:
         run_eqt(args)
-
-#python loco_coloc.py -glc ./GLC -f ./GLC/example_input.JSON

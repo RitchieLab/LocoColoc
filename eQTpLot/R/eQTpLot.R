@@ -86,15 +86,16 @@
 
 ########################
 ### Required Packages
-#require(ggnewscale)
-#require(patchwork)
-#require(dplyr)
-#require(Gviz)
-#require(GenomicRanges)
-#require(biomaRt)
-#require(ggpubr)
-#require(LDheatmap)
-#require(ggplotify)
+require(ggnewscale)
+require(patchwork)
+require(dplyr)
+require(Gviz)
+require(GenomicRanges)
+require(biomaRt)
+require(ggpubr)
+require(LDheatmap)
+require(ggplotify)
+#pirequire(ggplotify)
 
 eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
                     sigpvalue_GWAS = 5e-8, sigpvalue_eQTL = 0.05,
@@ -106,8 +107,7 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
                     getplot = TRUE, saveplot = TRUE,
                     GeneList = FALSE, TissueList = FALSE) {
 
-  print("testing testing")
-  
+
   ######################################
   ######## eQTpLot.gene.list SubFunction
   ######################################

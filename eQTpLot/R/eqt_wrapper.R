@@ -12,6 +12,10 @@ run_eqt <- function(gwas_df, eqtl_df, genes_df, ld_df = TRUE, gene, trait,
     GWAS.df <- get(load(gwas_df))
     eQTL.df <- get(load(eqtl_df))
 
+    if (ld_df != TRUE) {
+        ld_df <- get(load(ld_df))
+    }
+
     if (!missing(genes_df)) {
         Genes.df <- get(load(genes_df))
 

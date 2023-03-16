@@ -102,9 +102,9 @@
             "eqtl_df": "./eQTpLot/data/eQTL.df.example.RData",
             "gbuild": "hg19",
             "gene": "BBS1",
-            "sigpvalue_eQTL": "",
-            "sigpvalue_GWAS": "",
-            "tissue": "Adrenal_Gland",
+            "sigpvalue_eQTL": 0.01,
+            "sigpvalue_GWAS": 5e-8,
+            "tissue": "all",
             "trait": "LDL"
         },
         "optional": {

@@ -95,7 +95,6 @@ require(biomaRt)
 require(ggpubr)
 require(LDheatmap)
 require(ggplotify)
-#pirequire(ggplotify)
 
 eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
                     sigpvalue_GWAS = 5e-8, sigpvalue_eQTL = 0.05,

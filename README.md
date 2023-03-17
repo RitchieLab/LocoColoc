@@ -5,9 +5,14 @@ It is recommended to first read the individual READMEs for each of the packages 
 
 Below is a list of the parameters of running loco_coloc.py:
 * -*h* Show the help menu.
-* -*glc* Path to folder containing run_gene_level_coloc.R (./GLC). Mutually exclusive with ColocQuiaL flag
-* -*cql* In progress. Mutually exclusive with ColocQuiaL flag.
-* -*f* Path to JSON input file containing params. GLC example and template found in ./GLC. In progress for cql
+* -*glc* Run with this flag to run gene-level-colocalization. Code for this package can be found in /GLC. Mutually exclusive with ColocQuiaL flag
+* -*cql* Run with this flag to run ColocQuiaL. Code for this package can be found in /ColocQuiaL. Mutually exclusive with ColocQuiaL flag.
+* -*f* Required path to JSON input file containing params for packages to be run. Template available as config.JSON.
+* -*eqt*/--*eqtplot* Use either of these optional flags to run eQTpLot. Code for this package can be found in /eQTpLot.
+* --*no*-eqtplot* Use this flag to not run eQTpLot. Can also be omitted as default is to not run eQTpLot. Mutually exclussive with -*eqt*/--*eqtplot*.
 
-## Gene-Level-Coloc Example Input & Template Files
-In the GLC folder, there are two JSON files: one example_input file, and one blank input template file. All paths for file/folder variables in these JSON files should be specified relative to the LocoColoc folder where the script is. 
+## Example for Running Gene-Level-Coloc
+
+## Example for Running ColocQuiaL
+
+## Example for eQTpLot

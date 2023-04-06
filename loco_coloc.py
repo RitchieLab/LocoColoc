@@ -25,7 +25,8 @@ if __name__ == "__main__":
         exit(1)
 
     if args.gene_level_coloc:
-        run_glc(args)
+        pass
+        #run_glc(args)
     elif args.colocquial:
         run_cql(args)
     

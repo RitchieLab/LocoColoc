@@ -1,26 +1,54 @@
 import json
+import os
+import copy
+
+import numpy as np
 import pandas as pd
 import rpy2.robjects as ro
 
-def run_eqt(args):
-    config = open(args.file)
-    input = json.load(config)['eqt']
 
-    arg_dict = {**input['required']}
+def parse_glc_output(outfolder):
+    param_arr = []
+
+    for file in os.scandir(outfolder):
+        if file.path.endswith('_colocProbs.txt'):
+            df = pd.read_csv(file.path, sep="\t" ,usecols=['Gene', 'Tissue', 'GWAS.Lead.SNP'])
+            df.rename(columns={'Gene': 'gene', 'Tissue': 'tissue', 'GWAS.Lead.SNP': 'leadSNP'}, inplace=True)
+            data = df.to_dict(orient='records')
+            param_arr = np.concatenate((param_arr, data))
+
+    return param_arr
+
+
+def parse_cql_output(outfolder):
+    pass
+
+
+def run_eqt(args):
+    config = json.load(open(args.file))
+
+    if args.gene_level_coloc:
+        gene_tissue_pairs = parse_glc_output(config['glc']['params']['output_folder'])
+    else:
+        gene_tissue_pairs = parse_cql_output()
+
+    input = config['eqt']
+    base_args = {**input['required']}
 
     for k, v in (input['required']).items():
         if k[-2:] == "df":
-            arg_dict[k] = v
+            base_args[k] = v
         
     for k, v in (input['optional']).items():
         if v != "":
-            if k[-2:] == "df":
-                arg_dict[k] = v
-            else:
-                arg_dict[k] = v
+                base_args[k] = v
 
     r = ro.r
     r('''source('./eQTpLot/R/eqt_wrapper.R')''')
 
-    run_eqt = ro.globalenv['run_eqt']
-    run_eqt(**arg_dict)
+    for gtp in gene_tissue_pairs:
+        arg_dict = copy.deepcopy(base_args)
+        arg_dict.update(gtp)
+
+        run_eqt = ro.globalenv['run_eqt']
+        run_eqt(**arg_dict)

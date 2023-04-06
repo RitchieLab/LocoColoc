@@ -90,7 +90,7 @@
             "cojo_p": "",
             "reference_folder": "./GLC/example_data/reference_data/",
             "eqtl_folder": "./GLC/example_data/GTEx",
-            "output_folder": "./GLC/example_data/output/",
+            "output_folder": "./GLC_output/",
             "core": "",
             "ld_folder": "",
             "eqtl_sample_size_file": "./GLC/example_data/GTEx/GTEx_v8_PredictDB_tissues_num_samples.txt"
@@ -101,33 +101,16 @@
             "gwas_df": "./eQTpLot/data/GWAS.df.example.RData",
             "eqtl_df": "./eQTpLot/data/eQTL.df.example.RData",
             "gbuild": "hg19",
-            "gene": "BBS1",
             "sigpvalue_eQTL": 0.01,
             "sigpvalue_GWAS": 5e-8,
-            "tissue": "all",
             "trait": "LDL"
         },
         "optional": {
             "genes_df": "",
             "ld_df": "",
             "congruence": "",
-            "genometrackheight": "",
-            "getplot": "",
-            "LDcolor": "",
-            "LDmin": "",
-            "leadSNP": "",
-            "NESeQTLRange": "",
-            "R2min": "",
-            "range": "",
-            "res": "",
-            "saveplot": "",
-            "wi": "",
-            "xlimd": "",
-            "ylima": "",
-            "ylimd": "",
-            "CollapseMethod": "",
-            "Gene.List": "",
-            "Tissue.List": ""
+            "leadSNP": true,
+            "R2min": ""
         }
     }
 }

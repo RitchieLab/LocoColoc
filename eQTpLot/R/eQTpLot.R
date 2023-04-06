@@ -106,7 +106,6 @@ eQTpLot <- function(GWAS.df, eQTL.df, Genes.df, LD.df = TRUE, gene, trait,
                     getplot = TRUE, saveplot = TRUE,
                     GeneList = FALSE, TissueList = FALSE) {
 
-
   ######################################
   ######## eQTpLot.gene.list SubFunction
   ######################################

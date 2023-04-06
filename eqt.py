@@ -6,8 +6,7 @@ import numpy as np
 import pandas as pd
 import rpy2.robjects as ro
 
-
-def parse_glc_output(outfolder):
+def parse_cg_output(outfolder):
     param_arr = []
 
     for file in os.scandir(outfolder):
@@ -27,8 +26,8 @@ def parse_cql_output(outfolder):
 def run_eqt(args):
     config = json.load(open(args.file))
 
-    if args.gene_level_coloc:
-        gene_tissue_pairs = parse_glc_output(config['glc']['params']['output_folder'])
+    if args.colo_gene:
+        gene_tissue_pairs = parse_cg_output(config['cg']['params']['output_folder'])
     else:
         gene_tissue_pairs = parse_cql_output()
 

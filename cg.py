@@ -19,9 +19,9 @@ def run_harmonization(harmonization_file):
         subprocess.run(['bash', harmonization_file, harm_path])
 
 
-def run_glc(args):
+def run_cg(args):
     config = open(args.file)
-    input = json.load(config)['glc']
+    input = json.load(config)['cg']
 
     hz = input['setup']['harmonization_file']
     if hz:
@@ -39,7 +39,7 @@ def run_glc(args):
             print('Skipping harmonization...')
 
 
-    cmd = ['Rscript', '{}/run_gene_level_coloc.R'.format(input['setup']['glc_dir'])]
+    cmd = ['Rscript', '{}/run_gene_level_coloc.R'.format(input['setup']['cg_dir'])]
 
     for k, v in input['params'].items():
         if v:

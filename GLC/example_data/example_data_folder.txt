@@ -1,3 +1,0 @@
-Example data folder can be downloaded here:https://ritchielab.org/files/Lipid_Pleiotropy_project/gene_level_coloc_example_data.tar.gz
-
-Replace this empty example_data folder with downloaded folder.  

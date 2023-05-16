@@ -25,10 +25,12 @@ if __name__ == "__main__":
         exit(1)
 
     if args.colo_gene:
+        print('Running ColoGene...')
         run_cg(args)
     elif args.colocquial:
-        pass
-        #run_cql(args)
+        print('Running ColocQuiaL...')
+        run_cql(args)
     
     if args.eqtplot is True:
+        print('Running eQTpLot...')
         run_eqt(args)

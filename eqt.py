@@ -2,6 +2,7 @@ import json
 import os
 import copy
 import glob
+import time
 
 import numpy as np
 import pandas as pd
@@ -21,7 +22,13 @@ def parse_cg_output(outfolder):
 
 
 def parse_cql_output(outfolder):
-    res = glob.glob(outfolder + '*condPP4.txt')
+
+    res = []
+    while len(res) == 0:
+        print('Waiting for ColocQuiaL to finish running...')
+        time.sleep(30)
+        res = glob.glob(outfolder + '*condPP4.txt')
+    
     param_arr = []
     
     for file in res:
@@ -32,7 +39,7 @@ def parse_cql_output(outfolder):
         data = df.to_dict(orient='records')    
         param_arr = np.concatenate((param_arr, data))  
 
-    return param_arr[] 
+    return param_arr 
 
 
 def run_eqt(args):

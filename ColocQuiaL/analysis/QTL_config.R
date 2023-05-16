@@ -1,5 +1,5 @@
 trait = "BMI"
-traitFilePath = "/project/ritchie21/personal/wbone/ColocQuiaL_test/test_runs_dir/BMI_ColocQuiaL_test/BMI_Pulit_data_rsID_ready.txt"
+traitFilePath = "/home/nimay512/group/personal/nimay/cql_data/test_runs_dir/BMI_ColocQuiaL_test/BMI_Pulit_data_rsID_ready.txt"
 trait_A1col = "Tested_Allele"
 trait_A2col = "Other_Allele"
 trait_SNPcol = "SNP"

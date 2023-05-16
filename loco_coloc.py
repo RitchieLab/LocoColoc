@@ -27,7 +27,8 @@ if __name__ == "__main__":
     if args.colo_gene:
         run_cg(args)
     elif args.colocquial:
-        run_cql(args)
+        pass
+        #run_cql(args)
     
     if args.eqtplot is True:
         run_eqt(args)

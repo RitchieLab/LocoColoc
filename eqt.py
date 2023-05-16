@@ -1,6 +1,7 @@
 import json
 import os
 import copy
+import glob
 
 import numpy as np
 import pandas as pd
@@ -20,7 +21,18 @@ def parse_cg_output(outfolder):
 
 
 def parse_cql_output(outfolder):
-    pass
+    res = glob.glob(outfolder + '*condPP4.txt')
+    param_arr = []
+    
+    for file in res:
+        df = pd.read_csv(file, sep="\t", usecols=['SNP', 'Gene', 'GeneID-Tissue'])
+        df.rename(columns={'Gene': 'gene', 'GeneID-Tissue': 'tissue', 'SNP': 'leadSNP'}, inplace=True)
+        df['tissue'] = df['tissue'].str.split('_', n=1, expand=True)[1]
+
+        data = df.to_dict(orient='records')    
+        param_arr = np.concatenate((param_arr, data))  
+
+    return param_arr[] 
 
 
 def run_eqt(args):
@@ -29,7 +41,8 @@ def run_eqt(args):
     if args.colo_gene:
         gene_tissue_pairs = parse_cg_output(config['cg']['params']['output_folder'])
     else:
-        gene_tissue_pairs = parse_cql_output()
+        outfolder = config['cql']['setup_config']['colocquial_dir'] + '/analysis/'
+        gene_tissue_pairs = parse_cql_output(outfolder)
 
     input = config['eqt']
     base_args = {**input['required']}

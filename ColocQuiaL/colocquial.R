@@ -171,7 +171,6 @@ ggbio_genetrack <- function(chrom_str, BPStart, BPStop) {
 
 
     #between gene_region <-GRange(...) and plot <- plot@ggplot in ggbio_genetrack function
-    print("TESTING TESTING TESTING")
     print(gene_region)
     
     plot <- autoplot(Homo.sapiens, which = gene_region) + xlim(BPStart,BPStop) + scale_x_continuous(expand=c(0,0))
@@ -712,7 +711,6 @@ for(i in 1:nrow(eGenes)){
         print(paste("geneSymbol will be set to the ENSEMBL ID",geneID_noDOT))
 
         return(geneID_noDOT)
-
     })
 
     print(geneID)

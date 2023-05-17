@@ -10,7 +10,8 @@ def get_args(argv):
     parser = argparse.ArgumentParser(description="Loco Coloc")
     parser.add_argument("-f", "--file", help="Path to config file.")
     parser.add_argument("-eqt", "--eqtplot", action=argparse.BooleanOptionalAction, help="Optional arg to include to run eQTpLot.")
-
+    
+    parser.add_argument('--override', action='store_true')
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-cg', '--colo-gene', action='store_true')
     group.add_argument('-cql','--colocquial', action='store_true')

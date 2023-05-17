@@ -22,7 +22,6 @@ def parse_cg_output(outfolder):
 
 
 def parse_cql_output(outfolder):
-
     res = []
     while len(res) == 0:
         print('Waiting for ColocQuiaL to finish running...')
@@ -69,5 +68,5 @@ def run_eqt(args):
         arg_dict = copy.deepcopy(base_args)
         arg_dict.update(gtp)
 
-        run_eqt = ro.globalenv['run_eqt']
-        run_eqt(**arg_dict)
+        run_eqt_R = ro.globalenv['run_eqt']
+        run_eqt_R(**arg_dict)

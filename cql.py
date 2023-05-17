@@ -1,5 +1,7 @@
 import json
 import subprocess
+import os
+import shutil
 
 from cql_consts import setup_config_r_keys, setup_config_sh_keys, qtl_config_r_keys, qtl_config_sh_keys
 
@@ -74,9 +76,15 @@ def run_cql(args):
     input = json.load(config)['cql']
     setup_args = input['setup_config']
     cql_dir = setup_args['colocquial_dir']
-    analysis_dir = '{}/analysis'.format(cql_dir)
-
+    analysis_setup_dir = '{}/analysis'.format(cql_dir)
     analysis_dir = input['output_folder']
+
+    if os.path.exists(analysis_dir) and not args.override:
+        print("Specified output directory exists. Please explicitly confirm that you would like to override existing directory in LocoColoc configuration flags. Exiting...")
+        exit(1)
+
+    shutil.copytree(analysis_setup_dir, analysis_dir, dirs_exist_ok=True)
+
     generate_config_files(setup_args, input['qtl_config'], cql_dir, analysis_dir)
 
     if setup_args['batch']:

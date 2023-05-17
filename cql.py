@@ -76,6 +76,7 @@ def run_cql(args):
     cql_dir = setup_args['colocquial_dir']
     analysis_dir = '{}/analysis'.format(cql_dir)
 
+    analysis_dir = input['output_folder']
     generate_config_files(setup_args, input['qtl_config'], cql_dir, analysis_dir)
 
     if setup_args['batch']:

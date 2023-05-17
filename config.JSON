@@ -1,5 +1,6 @@
 {
     "cql": {
+        "output_folder": "./cql_analysis/",
         "setup_config": {
             "batch":true,
             "colocquial_dir": "/home/nimay512/repos/LocoColoc/ColocQuiaL",
@@ -90,7 +91,7 @@
             "cojo_p": "",
             "reference_folder": "./ColoGene/example_data/reference_data/",
             "eqtl_folder": "./ColoGene/example_data/GTEx",
-            "output_folder": "./CG_output/",
+            "output_folder": "./cg_analysis/",
             "core": "",
             "ld_folder": "",
             "eqtl_sample_size_file": "./ColoGene/example_data/GTEx/GTEx_v8_PredictDB_tissues_num_samples.txt"

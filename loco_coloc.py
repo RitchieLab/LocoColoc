@@ -6,6 +6,7 @@ from cql import run_cql
 from eqt import run_eqt
 
 def get_args(argv):
+    print('Parsing arguments...')
     parser = argparse.ArgumentParser(description="Loco Coloc")
     parser.add_argument("-f", "--file", help="Path to config file.")
     parser.add_argument("-eqt", "--eqtplot", action=argparse.BooleanOptionalAction, help="Optional arg to include to run eQTpLot.")

@@ -1,7 +1,7 @@
 #ID for user's trait of interest. (Can be any string)
 trait = "BMI" 
 #path to the input files
-traitFilePath = "/project/ritchie21/personal/wbone/ColocQuiaL_test/test_runs_dir/BMI_ColocQuiaL_test/BMI_Pulit_data_rsID_ready.txt" 
+traitFilePath = "/home/nimay512/group/personal/nimay/cql_data/test_runs_dir/BMI_ColocQuiaL_test/BMI_Pulit_data_rsID_ready.txt" 
 #column IDs from trait file
 trait_A1col = "Tested_Allele" 
 trait_A2col = "Other_Allele" 
@@ -17,8 +17,7 @@ traitType = "quant"
 #This is the proportion of samples that are cases in a case control GWAS, if you are using a quantitative trait this should be set to "". traitProp = cases / case + controls
 traitProp =  #look this up
 #locus information for running coloc. 
-chrom = CHROMOSOME 
-#chrom = "CHROMOSOME"
+chrom = CHROMOSOME
 colocStart = STARTBP
 colocStop = STOPBP
 #reference genome build: "hg19" or "hg38"
@@ -27,7 +26,7 @@ lead_SNP = "SNPNUMBER"
 #"eqtl" or "sqtl"
 qtlType = "eqtl"
 #plink parameters
-clump_P1 = 0.0000001
+clump_P1 = 1e-07
 clump_KB = 1000
 clump_R2 = 0.2
 #config file with paths to the qtl data and plink files
